@@ -98,8 +98,9 @@ def checkBacktrack(backtrack:bool, listFixedPositions0:List[int], row:int, colum
     return backtrack   
 
 def drawBoard(screen, board:List[int], listCorrect:List[int], color_x:int, color_y:int, cambioColor_x:int, cambioColor_y:int) -> int:
-    font = pygame.font.SysFont('arial', 30)
+    #Inicializar la pantalla a blanco
     screen.fill(WHITE)
+    #Establecer el color que estara el titulo de sudoku
     color_x += cambioColor_x
     color_y += cambioColor_y
     color = (98 + color_x, 12 + color_y, 255)
@@ -108,23 +109,33 @@ def drawBoard(screen, board:List[int], listCorrect:List[int], color_x:int, color
     elif  250 < 12 + color_y or 12 + color_y < 5:
         cambioColor_y = cambioColor_y * -1   
     pygame.draw.rect(screen, color, (0, 0, 110, 60))
+    #Mostrar el titulo Sudoku
+    font = pygame.font.SysFont('arial', 30)
     text = font.render('Sudoku', True, WHITE)
     screen.blit(text, [10, 10])
-    font = pygame.font.SysFont('arial', 20)
+    #Dibujamos las casillas
     for i in range(9):
         for j in range(9):
-            pygame.draw.rect(screen, BLACK, (65 + (40 * j), 105 + (40 * i), 40, 40), 1)
-            #pygame.draw.line(screen, BLACK, ())
+            pygame.draw.rect(screen, LIGHTER_GRAY, (65 + (40 * j), 105 + (40 * i), 40, 40), 1)
             buttonStart(screen)
             if board[i][j] == 0:
                 pygame.draw.rect(screen, WHITE, (66 + (40 * j), 106 + (40 * i), 38, 38), 1)
+            #En funcion de si se ha resuelto una casilla estara verde o rojo, en caso de no estar en esa casilla todavia estara en blanco
             elif listCorrect[i][j] == 1:
                 pygame.draw.rect(screen, GREEN, (66 + (40 * j), 106 + (40 * i), 38, 38), 1)
             elif listCorrect[i][j] == 2:
                 pygame.draw.rect(screen, RED, (66 + (40 * j), 106 + (40 * i), 38, 38), 1)    
+            #Mostramos los numeros de cada casilla
             if board[i][j] != 0:
+                font = pygame.font.SysFont('arial', 20)
                 text = font.render(str(board[i][j]), True, BLACK)
-                screen.blit(text, [80 + (40 * j), 115 + (40 * i)]) 
+                screen.blit(text, [80 + (40 * j), 115 + (40 * i)])
+    #Dibujar las lineas negras del board
+    pygame.draw.rect(screen, BLACK, (65, 105, 360, 360), 1)
+    pygame.draw.line(screen, BLACK, (185, 105), (185, 465))
+    pygame.draw.line(screen, BLACK, (305, 105), (305, 465))
+    pygame.draw.line(screen, BLACK, (65, 225), (425, 225))
+    pygame.draw.line(screen, BLACK, (65, 345), (425, 345))             
     return color_x, color_y, cambioColor_x, cambioColor_y            
 
 def buttonStart(screen, buttonColor = DARK_GRAY) -> None:
